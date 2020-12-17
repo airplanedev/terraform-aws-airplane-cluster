@@ -8,7 +8,7 @@ Use this module in your Terraform configuration:
 
 ```
 module "airplane_agent" {
-  source                 = "github.com/airplanedev/terraform-aws-airplane-cluster@v0.1"
+  source                 = "git@github.com:airplanedev/terraform-aws-airplane-cluster.git?ref=v0.1"
 
   api_token              = "YOUR_API_TOKEN"
   team_id                = "YOUR_TEAM_ID"
