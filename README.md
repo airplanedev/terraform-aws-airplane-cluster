@@ -1,2 +1,2 @@
 # terraform-aws-airplane-cluster
-Cluster of Airplane agents in aWS
+Cluster of Airplane agents in AWS
