@@ -1,0 +1,40 @@
+{
+  "variables": {
+    "region": "us-west-2",
+    "arch": "x86_64"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "region": "{{user `region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "amzn2-ami-hvm-2.0.*-gp2",
+          "architecture": "{{user `arch`}}",
+          "virtualization-type": "hvm"
+        },
+        "owners": ["amazon"],
+        "most_recent": true
+      },
+      "instance_type": "t3.medium",
+      "ssh_username": "ec2-user",
+      "ami_name": "airplane-linux-{{user `arch`}}-{{isotime | clean_resource_name}}",
+      "ami_groups": ["all"]
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "source": "conf",
+      "destination": "/tmp"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-docker.sh"
+    },
+    {
+      "type": "shell",
+      "script": "scripts/install-airplane-agent.sh"
+    }
+  ]
+}
