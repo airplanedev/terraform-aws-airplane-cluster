@@ -1,8 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
+INSTANCE_ID=$(/opt/aws/bin/ec2-metadata --instance-id | cut -d " " -f 2)
+
 cat << EOF > /etc/airplane-agent/airplane-agent.env
-AP_AGENT_NAME=${AP_AGENT_NAME}
+AP_AGENT_NAME=${INSTANCE_ID}-%s
 AP_API_HOST=${AP_API_HOST}
 AP_API_TOKEN=${AP_API_TOKEN}
 AP_TEAM_ID=${AP_TEAM_ID}
