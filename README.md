@@ -9,7 +9,7 @@ Use this module in your Terraform configuration:
 ```hcl
 module "airplane_agent" {
   source  = "airplanedev/airplane-cluster/aws"
-  version = "0.2.0"
+  version = "0.3.1"
 
   api_token              = "YOUR_API_TOKEN"
   team_id                = "YOUR_TEAM_ID"
