@@ -36,5 +36,11 @@
       "type": "shell",
       "script": "scripts/install-airplane-agent.sh"
     }
+  ],
+  "post-processors": [
+    {
+      "type": "manifest",
+      "output": "manifest.json"
+    }
   ]
 }
