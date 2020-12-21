@@ -18,9 +18,9 @@ variable "team_id" {
 variable "agent_ami" {
   type = map
   default = {
-    "us-east-1" = "ami-0efe4f802725e5849"
-    "us-west-2" = "ami-0e5a521c43f585d81"
-    "eu-west-1" = "ami-0107017f5252ef416"
+    "eu-west-1" = "ami-0d70cd08fa8d28277"
+    "us-east-1" = "ami-091e1434b7783a4de"
+    "us-west-2" = "ami-00e123e306c53ba0c"
   }
 }
 

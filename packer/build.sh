@@ -10,11 +10,14 @@ echo "Built image ${IMAGE_NAME} in us-west-2: ${AMI_US_WEST_2}"
 echo "Copying to us-east-1..."
 AMI_US_EAST_1="$(aws ec2 copy-image \
     --source-image-id "${AMI_US_WEST_2}" --source-region us-west-2 \
-    --region us-east-1 --name "${IMAGE_NAME}")"
+    --region us-east-1 --name "${IMAGE_NAME}" | jq -r .ImageId)"
+echo "Copied AMI in us-east-1: ${AMI_US_EAST_1}"
+
 echo "Copying to eu-west-1..."
 AMI_EU_WEST_1="$(aws ec2 copy-image \
-    --source-image-id "${AMI_US_WEST_2}" --source-region eu-west-1 \
-    --region us-east-1 --name "${IMAGE_NAME}")"
+    --source-image-id "${AMI_US_WEST_2}" --source-region us-west-2 \
+    --region eu-west-1 --name "${IMAGE_NAME}" | jq -r .ImageId)"
+echo "Copied AMI in eu-west-1: ${AMI_EU_WEST_1}"
 
 echo ""
 echo "Images built:"

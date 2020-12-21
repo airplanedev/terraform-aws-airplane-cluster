@@ -30,6 +30,10 @@
     },
     {
       "type": "shell",
+      "script": "scripts/install-utils.sh"
+    },
+    {
+      "type": "shell",
       "script": "scripts/install-docker.sh"
     },
     {
