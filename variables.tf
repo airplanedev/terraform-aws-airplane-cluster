@@ -16,7 +16,7 @@ variable "team_id" {
 // AWS variables
 
 variable "agent_ami" {
-  type = map
+  type = map(string)
   default = {
     "eu-west-1" = "ami-0d70cd08fa8d28277"
     "us-east-1" = "ami-091e1434b7783a4de"
@@ -38,6 +38,11 @@ variable "managed_policy_arns" {
   type        = list(string)
   default     = []
   description = "List of IAM policy ARNs to attach to the instance role"
+}
+
+variable "tags" {
+  type    = map(string)
+  default = {}
 }
 
 variable "vpc_security_group_ids" {
