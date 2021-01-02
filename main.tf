@@ -68,4 +68,13 @@ resource "aws_autoscaling_group" "asg" {
   lifecycle {
     create_before_destroy = true
   }
+
+  // Whenever template, tags, etc. change, trigger an instance refresh
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 100
+    }
+    triggers = ["tag"]
+  }
 }
