@@ -51,7 +51,7 @@ resource "aws_iam_role_policy_attachment" "attach" {
 }
 
 resource "aws_autoscaling_group" "asg" {
-  name = "airplane-agent-${aws_launch_template.lt.latest_version}"
+  name_prefix = "airplane-agent-"
 
   vpc_zone_identifier = var.vpc_subnet_ids
 
