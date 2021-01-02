@@ -10,6 +10,8 @@ resource "aws_launch_template" "lt" {
     name = aws_iam_instance_profile.profile.name
   }
 
+  instance_initiated_shutdown_behavior = "terminate"
+
   user_data = base64encode(templatefile("${path.module}/userdata.tpl", {
     api_host  = var.api_host
     api_token = var.api_token
