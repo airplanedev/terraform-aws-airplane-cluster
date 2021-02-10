@@ -24,9 +24,9 @@ variable "agent_ami" {
   }
 }
 
-variable "aws_region" {
-  type    = string
-  default = "us-west-2"
+variable "instance_count" {
+  type    = number
+  default = 1
 }
 
 variable "instance_type" {
@@ -47,7 +47,8 @@ variable "tags" {
 
 variable "vpc_security_group_ids" {
   type        = list(string)
-  description = "List of security group IDs to apply to instances"
+  description = "List of security group IDs to attach to instances"
+  default     = []
 }
 
 variable "vpc_subnet_ids" {
