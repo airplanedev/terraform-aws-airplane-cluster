@@ -1,10 +1,24 @@
 data "aws_region" "current" {}
 
+data "aws_subnet" "subnet" {
+  id = var.vpc_subnet_ids[0]
+}
+
+module "agent_sg" {
+  source = "terraform-aws-modules/security-group/aws"
+
+  name        = "airplane-agent"
+  description = "Security group for Airplane agent"
+  vpc_id      = data.aws_subnet.subnet.vpc_id
+
+  egress_rules = ["all-all"]
+}
+
 resource "aws_launch_template" "lt" {
   name_prefix            = "airplane-agent-"
   image_id               = var.agent_ami[data.aws_region.current.name]
   instance_type          = var.instance_type
-  vpc_security_group_ids = var.vpc_security_group_ids
+  vpc_security_group_ids = concat([module.agent_sg.this_security_group_id], var.vpc_security_group_ids)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.profile.name
@@ -56,13 +70,13 @@ resource "aws_autoscaling_group" "asg" {
   vpc_zone_identifier = var.vpc_subnet_ids
 
   termination_policies = ["OldestInstance"]
-  desired_capacity     = 1
-  min_size             = 1
-  max_size             = 5
+  desired_capacity     = var.instance_count
+  min_size             = var.instance_count
+  max_size             = var.instance_count
 
   launch_template {
     id      = aws_launch_template.lt.id
-    version = "$Latest"
+    version = aws_launch_template.lt.latest_version
   }
 
   lifecycle {

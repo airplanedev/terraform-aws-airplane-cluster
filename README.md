@@ -20,6 +20,10 @@ module "airplane_agent" {
   vpc_subnet_ids         = ["subnet-000", "subnet-111"]
   # Any additional security groups (optional)
   vpc_security_group_ids = ["sg-222"]
+  # Change number of instances / agents
+  instance_count = 3
+  # Change instance type (default t3.medium)
+  instance_type = "t3.large"
 }
 
 resource "aws_iam_policy" "agent" {
