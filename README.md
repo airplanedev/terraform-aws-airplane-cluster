@@ -22,6 +22,8 @@ module "airplane_agent" {
   managed_policy_arns    = [aws_iam_policy.agent.arn]
   # Additional security groups
   vpc_security_group_ids = ["sg-222"]
+  # Change number of instances / agents
+  instance_count = 3
   # Change instance type (default t3.medium)
   instance_type = "t3.large"
 }
