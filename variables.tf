@@ -14,7 +14,8 @@ variable "team_id" {
 }
 
 variable "labels" {
-  type = string
+  type        = map(string)
+  default     = {}
   description = "Labels to attach to agents which can be used to constrain what tasks the agent can accept"
 }
 

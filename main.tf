@@ -30,7 +30,7 @@ resource "aws_launch_template" "lt" {
     api_host  = var.api_host
     api_token = var.api_token
     team_id   = var.team_id
-    labels    = var.labels
+    labels    = join(" ", [for k in var.labels: format("%s:%s", k, var.labels[k])])
   }))
 }
 
