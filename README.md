@@ -20,8 +20,8 @@ module "airplane_agent" {
 
   # Labels to attach to agents, for use by task constraints
   labels = {
-    "vpc" = "123"
-    "env" = "test"
+    vpc = "123"
+    env = "test"
   }
   # Attach necessary IAM policies to e.g. allow agent to pull images from ECR
   managed_policy_arns    = [aws_iam_policy.agent.arn]
