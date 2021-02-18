@@ -13,6 +13,11 @@ variable "team_id" {
   type = string
 }
 
+variable "labels" {
+  type = string
+  description = "Labels to attach to agents which can be used to constrain what tasks the agent can accept"
+}
+
 // AWS variables
 
 variable "agent_ami" {
