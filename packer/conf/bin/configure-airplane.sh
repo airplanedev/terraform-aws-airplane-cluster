@@ -10,7 +10,7 @@ AP_AGENT_NAME=${INSTANCE_ID}-%s
 AP_API_HOST=${AP_API_HOST}
 AP_API_TOKEN=${AP_API_TOKEN}
 AP_TEAM_ID=${AP_TEAM_ID}
-AP_LABELS=cloud:aws aws_instance_id:${INSTANCE_ID} aws_region:${AWS_REGION} aws_account_id:${AWS_ACCOUNT_ID} ${AP_LABELS}
+AP_LABELS=cloud:aws aws_instance_id:${INSTANCE_ID} aws_region:${AWS_REGION} aws_account_id:${AWS_ACCOUNT_ID} ${AP_LABELS:-}
 EOF
 
 chown airplane-agent: /etc/airplane-agent/airplane-agent.env
