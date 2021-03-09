@@ -5,11 +5,9 @@ set -euo pipefail
 export AWS_PAGER=""
 
 echo "Running packer build..."
-# packer build airplane-ami.json
-# AMI_US_WEST_2="$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)"
-# IMAGE_NAME="$(aws ec2 describe-images --image-id "${AMI_US_WEST_2}" | jq -r '.Images[0].Name')"
-AMI_US_WEST_2=ami-05036cf0149cf52e2
-IMAGE_NAME=airplane-linux-x86_64-2021-03-09T04-15-29Z
+packer build airplane-ami.json
+AMI_US_WEST_2="$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)"
+IMAGE_NAME="$(aws ec2 describe-images --image-id "${AMI_US_WEST_2}" | jq -r '.Images[0].Name')"
 echo "Built image ${IMAGE_NAME} in us-west-2: ${AMI_US_WEST_2}"
 
 echo "Copying to us-east-1..."
@@ -31,6 +29,8 @@ echo "us-east-1: ${AMI_US_EAST_1}"
 echo "us-west-2: ${AMI_US_WEST_2}"
 
 echo ""
+# AMI_US_WEST_2 is already public via `ami_groups = ["all"]` in packer configuration.
+# We need to update the other AMIs to be public.
 echo "Waiting for images to become available to make them public..."
 echo "Waiting on ${AMI_US_EAST_1} in us-east-1"
 aws ec2 wait image-available \
