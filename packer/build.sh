@@ -1,10 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
+# Fixes https://github.com/aws/aws-cli/pull/4702#issue-344978525
+export AWS_PAGER=""
+
 echo "Running packer build..."
-packer build airplane-ami.json
-AMI_US_WEST_2="$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)"
-IMAGE_NAME="$(aws ec2 describe-images --image-id "${AMI_US_WEST_2}" | jq -r '.Images[0].Name')"
+# packer build airplane-ami.json
+# AMI_US_WEST_2="$(jq -r '.builds[-1].artifact_id' manifest.json | cut -d ":" -f2)"
+# IMAGE_NAME="$(aws ec2 describe-images --image-id "${AMI_US_WEST_2}" | jq -r '.Images[0].Name')"
+AMI_US_WEST_2=ami-05036cf0149cf52e2
+IMAGE_NAME=airplane-linux-x86_64-2021-03-09T04-15-29Z
 echo "Built image ${IMAGE_NAME} in us-west-2: ${AMI_US_WEST_2}"
 
 echo "Copying to us-east-1..."
@@ -24,3 +29,20 @@ echo "Images built:"
 echo "eu-west-1: ${AMI_EU_WEST_1}"
 echo "us-east-1: ${AMI_US_EAST_1}"
 echo "us-west-2: ${AMI_US_WEST_2}"
+
+echo ""
+echo "Waiting for images to become available to make them public..."
+echo "Waiting on ${AMI_US_EAST_1} in us-east-1"
+aws ec2 wait image-available \
+    --region us-east-1 --image-ids "${AMI_US_EAST_1}"
+aws ec2 modify-image-attribute \
+    --region us-east-1 --image-id "${AMI_US_EAST_1}" \
+    --launch-permission "Add=[{Group=all}]"
+echo "Updated ${AMI_US_EAST_1} to be public"
+echo "Waiting on ${AMI_EU_WEST_1} in eu-west-1"
+aws ec2 wait image-available \
+    --region eu-west-1 --image-ids "${AMI_EU_WEST_1}"
+aws ec2 modify-image-attribute \
+    --region eu-west-1 --image-id "${AMI_EU_WEST_1}" \
+    --launch-permission "Add=[{Group=all}]"
+echo "Updated ${AMI_EU_WEST_1} to be public"
