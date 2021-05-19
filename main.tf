@@ -12,13 +12,15 @@ module "agent_sg" {
   vpc_id      = data.aws_subnet.subnet.vpc_id
 
   egress_rules = ["all-all"]
+
+  tags = var.tags
 }
 
 resource "aws_launch_template" "lt" {
   name_prefix            = "airplane-agent-"
   image_id               = var.agent_ami[data.aws_region.current.name]
   instance_type          = var.instance_type
-  vpc_security_group_ids = concat([module.agent_sg.this_security_group_id], var.vpc_security_group_ids)
+  vpc_security_group_ids = concat([module.agent_sg.security_group_id], var.vpc_security_group_ids)
 
   iam_instance_profile {
     name = aws_iam_instance_profile.profile.name
@@ -30,13 +32,23 @@ resource "aws_launch_template" "lt" {
     api_host  = var.api_host
     api_token = var.api_token
     team_id   = var.team_id
-    labels    = join(" ", [for key, value in var.labels: format("%s:%s", key, value)])
+    labels    = join(" ", [for key, value in var.labels : format("%s:%s", key, value)])
   }))
+
+  tag_specifications {
+    resource_type = "instance"
+    tags          = var.tags
+  }
+  tag_specifications {
+    resource_type = "volume"
+    tags          = var.tags
+  }
 }
 
 resource "aws_iam_instance_profile" "profile" {
   name_prefix = "airplane-agent-"
   role        = aws_iam_role.role.name
+  tags        = var.tags
 }
 
 resource "aws_iam_role" "role" {
@@ -57,6 +69,8 @@ resource "aws_iam_role" "role" {
     ]
 }
 EOF
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "attach" {
