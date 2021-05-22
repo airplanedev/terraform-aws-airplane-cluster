@@ -35,13 +35,19 @@ resource "aws_launch_template" "lt" {
     labels    = join(" ", [for key, value in var.labels : format("%s:%s", key, value)])
   }))
 
-  tag_specifications {
-    resource_type = "instance"
-    tags          = var.tags
+  dynamic "tag_specifications" {
+    for_each = length(keys(var.tags)) > 0 ? [1] : []
+    content {
+      resource_type = "instance"
+      tags          = var.tags
+    }
   }
-  tag_specifications {
-    resource_type = "volume"
-    tags          = var.tags
+  dynamic "tag_specifications" {
+    for_each = length(keys(var.tags)) > 0 ? [1] : []
+    content {
+      resource_type = "volume"
+      tags          = var.tags
+    }
   }
 }
 
