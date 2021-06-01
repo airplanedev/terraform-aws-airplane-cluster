@@ -104,6 +104,12 @@ resource "aws_autoscaling_group" "asg" {
     create_before_destroy = true
   }
 
+  tag {
+    key                 = "Name"
+    value               = "airplane-agent"
+    propagate_at_launch = true
+  }
+
   dynamic "tag" {
     for_each = var.tags
     content {
